@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { deleteMovie } from '../actions/movieActions';
+import { addFavorite } from '../actions/favoritesActions';
 
 const Movie = (props) => {
     const { id } = useParams();
@@ -13,6 +14,10 @@ const Movie = (props) => {
     const handleDelete = () => {
         props.deleteMovie(movie.id);
         push('/movies');
+    }
+
+    const handleFavorite = () => {
+        props.addFavorite(movie);
     }
     
     return(<div className="modal-page col">
@@ -44,7 +49,7 @@ const Movie = (props) => {
                         </section>
                         
                         <section>
-                            <span className="m-2 btn btn-dark">Favorite</span>
+                            {props.displayFavorites && <span className="m-2 btn btn-dark" onClick={handleFavorite}>Favorite</span>}
                             <span className="delete"><input type="button" className="m-2 btn btn-danger" value="Delete" onClick={handleDelete}/></span>
                         </section>
                     </div>
@@ -61,4 +66,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { deleteMovie })(Movie);
+export default connect(mapStateToProps, { deleteMovie, addFavorite })(Movie);
